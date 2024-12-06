@@ -1,8 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rasul Projects</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px 0;
+            font-size: 24px;
+        }
+        .buttons-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .button {
+            width: 150px;
+            height: 100px;
+            margin: 10px;
+            background-color: #f0f0f0;
+            border: 2px solid #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            color: black;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .button:hover {
+            background-color: #4CAF50;
+            color: white;
+            transform: scale(1.1);
+        }
+    </style>
 </head>
 <body>
-  <h1>Kechirasiz kazirshe sayt istemey turipti</h1>
+    <header>
+        Rasul Projects
+    </header>
+    <div class="buttons-container">
+        <a href="chatbot.html" class="button">chatbot</a>
+        <a href="qqr.html" class="button">qqr=uzb translate</a>
+        <a href="test.html" class="button">test</a>
+        <a href="" class="button">×</a>
+        <a href="" class="button">×</a>
+        <a href="" class="button">×</a>
+    </div>
 </body>
 </html>
