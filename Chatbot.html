@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #222;
+            color: #eee;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .chat-container {
+            width: 400px;
+            background: #333;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            position: relative;
+        }
+        .chat-header {
+            background: #444;
+            padding: 10px;
+            text-align: center;
+            font-size: 18px;
+        }
+        .back-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #007bff;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .chat-body {
+            height: 300px;
+            overflow-y: auto;
+            padding: 10px;
+        }
+        .chat-body .message {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .message.user {
+            background: #007bff;
+            color: white;
+            text-align: right;
+        }
+        .message.bot {
+            background: #555;
+        }
+        .chat-footer {
+            display: flex;
+            border-top: 1px solid #444;
+        }
+        .chat-footer input {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 0;
+            outline: none;
+        }
+        .chat-footer button {
+            padding: 10px 20px;
+            background: #007bff;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <a href="index.html" class="back-button">←menu</a>
+        <div class="chat-header">Chatbot</div>
+        <div class="chat-body" id="chat-body"></div>
+        <div class="chat-footer">
+            <input type="text" id="user-input" placeholder="jazin'...">
+            <button onclick="sendMessage()">Jiberu</button>
+        </div>
+    </div>
+
+    <script>
+        const chatBody = document.getElementById('chat-body');
+
+        function sendMessage() {
+            const userInput = document.getElementById('user-input');
+            const message = userInput.value.trim();
+            if (!message) return;
+
+            addMessage(message, 'user');
+            userInput.value = '';
+
+            setTimeout(() => {
+                const response = getBotResponse(message);
+                addMessage(response, 'bot');
+            }, 500);
+        }
+
+        function addMessage(text, type) {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message', type);
+            messageElement.textContent = text;
+            chatBody.appendChild(messageElement);
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        function getBotResponse(input) {
+            input = input.toLowerCase();
+            if (input.includes('salem') || input.includes('salem')) {
+                return "Salem! men sizge qanday jardem bere alaman?";
+            } else if (input.includes('qalay')) {
+                return "Jaqsi, rahmet! oz ";
+            } else if (input.includes('jaqsi')) {
+                return "sogʻan ne qilayn";
+            } else {
+                return "gandon men onday sozdi bilmeymen.";
+            }
+        }
+    </script>
+</body>
+</html>
