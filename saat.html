@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saat hám Tuwılǵan Kún</title>
+  <script>
+      function updateTimeAndBirthdays() {
+  const timeElement = document.getElementById('time');
+  const dateElement = document.getElementById('date');
+  const countdownElement = document.getElementById('countdown');
+  const birthdayContainer = document.getElementById('birthdayContainer');
+
+  const now = new Date();
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+  const day = now.getDate();
+  const month = now.toLocaleString('default', { month: 'long' });
+  const year = now.getFullYear();
+
+  // Soat va sanani yangilash
+  timeElement.textContent = `${hours}:${minutes}:${seconds}`;
+  dateElement.textContent = `${day} ${month} ${year}`;
+  
+  // Yangi yilga hisoblagich
+  const nextYear = new Date(year + 1, 0, 1);
+  const timeDifference = nextYear - now;
+  const daysLeft = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+  const hoursLeft = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutesLeft = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+  const secondsLeft = Math.floor((timeDifference % (1000 * 60)) / 1000);
+  countdownElement.textContent = `Jan'a jılg'a deyingi waqıt: ${daysLeft} kún, ${hoursLeft} saat, ${minutesLeft} minut, ${secondsLeft} sekund`;
+
+  // Tug'ilgan kunlar ro'yxatini yangilash
+  const birthdays = [
+    { name: "Shiraz", date: "2008-08-02" },
+    { name: "Umida", date: "2008-12-22" },
+    { name: "Nurjan", date: "2008-05-06" },
+    { name: "Sardar", date: "2008-08-12" },
+    { name: "Sultan", date: "2008-04-14" },
+    { name: "Ariwxan", date: "2008-10-09" },
+    { name: "Shaxrizada", date: "2008-04-26" },
+    { name: "Ulmeken", date: "2008-10-25" },
+    { name: "Xoja", date: "2008-09-21" },
+    { name: "Ruslan", date: "2008-12-05" },
+    { name: "Hurliman", date: "2008-09-11" },
+    { name: "Atash", date: "2008-03-26" },
+    { name: "Diana", date: "2008-07-05" },
+    { name: "Aydana", date: "2008-05-26" },
+    { name: "Durdan", date: "2008-11-05" },
+    { name: "Jandos", date: "2008-02-23" },
+    { name: "Samandar", date: "2008-12-20" },
+    { name: "Akon", date: "2008-10-17" },
+    { name: "Rasul", date: "2008-04-14" },
+    { name: "Aliy", date: "2008-04-06" },
+    { name: "Zamir", date: "2008-05-05" },
+    { name: "Ramuza", date: "2008-09-30" },
+    { name: "Sagdiyana", date: "2008-06-16" },
+    { name: "Aygul", date: "2008-07-24" },
+  ];
+
+  birthdayContainer.innerHTML = ''; // Tozalash
+
+  // Tug'ilgan kunni bugun bo'lganlarni topish
+  const todayBirthdayPeople = birthdays.filter(person => {
+    const birthDate = new Date(`${year}-${person.date.split('-')[1]}-${person.date.split('-')[2]}`);
+    return birthDate.getDate() === now.getDate() && birthDate.getMonth() === now.getMonth();
+  });
+
+  // Bugun tug'ilganlar uchun maxsus format
+  todayBirthdayPeople.forEach((person) => {
+    const card = document.createElement('div');
+    card.className = 'birthday-card special-birthday';
+    card.innerHTML = `
+      <h3>${person.name}</h3>
+      <p>Sáne: ${person.date}</p>
+      <p><strong>Búgin tuwılǵan kúni</strong></p>
+    `;
+    birthdayContainer.appendChild(card);
+  });
+
+  // Boshqa tug'ilgan kunlarni tartibda ko'rsatish
+  birthdays.sort((a, b) => {
+    const dateA = new Date(`${year}-${a.date.split('-')[1]}-${a.date.split('-')[2]}`);
+    const dateB = new Date(`${year}-${b.date.split('-')[1]}-${b.date.split('-')[2]}`);
+
+    if (dateA < now) dateA.setFullYear(year + 1);
+    if (dateB < now) dateB.setFullYear(year + 1);
+
+    return dateA - dateB;
+  });
+
+  // Tug'ilgan kuni bugun bo'lmaganlarni ko'rsatish
+  birthdays.forEach((person) => {
+    const birthDate = new Date(`${year}-${person.date.split('-')[1]}-${person.date.split('-')[2]}`);
+    if (birthDate < now) birthDate.setFullYear(year + 1);
+
+    const timeDifference = birthDate - now;
+    const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+    const card = document.createElement('div');
+    card.className = 'birthday-card';
+    card.innerHTML = `
+      <h3>${person.name}</h3>
+      <p>Sáne: ${person.date}</p>
+      <p>Qalğan waqıt: ${days} kún, ${hours} saat, ${minutes} minut, ${seconds} sekund</p>
+    `;
+    birthdayContainer.appendChild(card);
+  });
+}
+
+// Interval o'rnatish
+setInterval(updateTimeAndBirthdays, 1000);
+  </script>
+  <style>
+      /* Asosiy uslub */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #121212;
+  color: #d4f4dd;
+}
+
+/* Soat va sana uchun uslub */
+.top-container {
+  text-align: center;
+  margin: 20px 0;
+  padding: 10px;
+  border: 1px solid #1b5e20;
+  border-radius: 10px;
+  background: #1d2d1f;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
+  width: 80%;
+  max-width: 400px;
+}
+
+.time {
+  font-size: 18px;
+  font-weight: bold;
+  color: #4caf50;
+}
+
+.date {
+  font-size: 14px;
+  margin-top: 5px;
+  color: #81c784;
+}
+
+.countdown {
+  background-color: #2e7d32;
+  color: #e8f5e9;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  border: 1px solid #388e3c;
+  margin-top: 10px;
+}
+
+/* Sarlavha uslubi */
+.title-container {
+  width: 100%;
+  background-color: #1b5e20;
+  text-align: center;
+  padding: 10px;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 20px;
+  border-bottom: 1px solid #2e7d32;
+}
+
+/* Tuwılǵan kún konteyneri */
+.birthday-container {
+  margin-top: 20px;
+  width: 90%;
+  max-width: 800px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  justify-content: center;
+}
+
+.birthday-card {
+  background-color: #263238;
+  color: #d4f4dd;
+  padding: 10px;
+  border-radius: 10px;
+  text-align: center;
+  border: 1px solid #1b5e20;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
+}
+
+.birthday-card h3 {
+  margin: 0 0 10px 0;
+  font-size: 16px;
+  color: #66bb6a;
+}
+
+.birthday-card p {
+  font-size: 14px;
+  color: #a5d6a7;
+}
+  </style>
+</head>
+<body>
+  <!-- Soat va Sana -->
+  <div class="top-container">
+    <div class="time" id="time">00:00:00</div>
+    <div class="date" id="date">01 January 2024</div>
+    <div class="countdown" id="countdown"></div>
+  </div>
+
+  <!-- Tuwılǵan kún sarlavhasi -->
+  <div class="title-container">Tuwılǵan kúnler</div>
+
+  <!-- Tuwılǵan kún kartalari -->
+  <div class="birthday-container" id="birthdayContainer">
+    <!-- Kartalar JavaScript orqali qoshlanadi -->
+  </div>
+
+  <script src="script.js"></script>
+</body>
+  </html>
