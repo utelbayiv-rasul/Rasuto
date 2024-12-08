@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>From-To API Example</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    h1 {
+      color: #4CAF50;
+    }
+
+    form {
+      margin-bottom: 20px;
+    }
+
+    input, select {
+      padding: 10px;
+      margin: 10px;
+      width: 200px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #result {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Translate Text</h1>
+  <form id="translate-form">
+    <label for="text">Enter text:</label>
+    <input type="text" id="text" required>
+    
+    <label for="lang_from">From Language:</label>
+    <select id="lang_from">
+      <option value="uz">Uzbek</option>
+      <option value="eng_Latn">English</option>
+      <option value="rus_Cyrl">Russian</option>
+    </select>
+    
+    <label for="lang_to">To Language:</label>
+    <select id="lang_to">
+      <option value="kaa">Karakalpak</option>
+      <option value="eng_Latn">English</option>
+      <option value="rus_Cyrl">Russian</option>
+    </select>
+
+    <button type="submit">Translate</button>
+  </form>
+
+  <div id="result">
+    <h2>Translation:</h2>
+    <p id="translation"></p>
+  </div>
+
+  <script>
+    document.getElementById("translate-form").addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const text = document.getElementById("text").value;
+      const lang_from = document.getElementById("lang_from").value;
+      const lang_to = document.getElementById("lang_to").value;
+
+      const body = {
+        body: {
+          lang_from: lang_from,
+          lang_to: lang_to,
+          resultCase: "cyrill", // Natija formatini kirillda olish
+          text: text
+        }
+      };
+
+      try {
+        const response = await fetch("https://api.from-to.uz/api/v1/translate", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(body)
+        });
+
+        const data = await response.json();
+        
+        // Javobni ekranda ko'rsatish
+        document.getElementById("translation").textContent = data.result;
+      } catch (error) {
+        console.error("Error:", error);
+        document.getElementById("translation").textContent = "An error occurred!";
+      }
+    });
+  </script>
+</body>
+</html>
