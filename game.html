@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To‘siqlardan Qoch</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #222;
+        }
+
+        canvas {
+            display: block;
+        }
+
+        #gameOver {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-size: 32px;
+            font-family: Arial, sans-serif;
+            display: none;
+            text-align: center;
+        }
+
+        #restartButton {
+            position: fixed;
+            top: 60%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #4CAF50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            display: none;
+        }
+
+        #restartButton:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas"></canvas>
+    <div id="gameOver">Game Over!</div>
+    <button id="restartButton">Restart</button>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const gameOverElement = document.getElementById('gameOver');
+        const restartButton = document.getElementById('restartButton');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let player, obstacles, isGameOver, score;
+
+        function initializeGame() {
+            player = { x: canvas.width / 2 - 15, y: canvas.height / 2, size: 30, color: '#4CAF50', speed: 3, gravity: 1 };
+            obstacles = [];
+            isGameOver = false;
+            score = 0;
+
+            gameOverElement.style.display = 'none';
+            restartButton.style.display = 'none';
+        }
+
+        function createObstacle() {
+            const obstacleHeight = Math.random() * (canvas.height / 3) + 50;
+            const gap = 150;
+            const obstacleX = canvas.width;
+            const obstacleTop = { x: obstacleX, y: 0, width: 50, height: obstacleHeight, color: '#FF5722' };
+            const obstacleBottom = { x: obstacleX, y: obstacleHeight + gap, width: 50, height: canvas.height - obstacleHeight - gap, color: '#FF5722' };
+            obstacles.push(obstacleTop, obstacleBottom);
+        }
+
+        function updateObstacles() {
+            for (let i = 0; i < obstacles.length; i++) {
+                obstacles[i].x -= 3;
+
+                if (obstacles[i].x + obstacles[i].width < 0) {
+                    obstacles.splice(i, 1);
+                    i--;
+                    score++;
+                }
+            }
+
+            if (obstacles.length === 0 || (canvas.width - obstacles[obstacles.length - 1].x) > 200) {
+                createObstacle();
+            }
+        }
+
+        function drawPlayer() {
+            ctx.fillStyle = player.color;
+            ctx.fillRect(player.x, player.y, player.size, player.size);
+        }
+
+        function drawObstacles() {
+            for (const obstacle of obstacles) {
+                ctx.fillStyle = obstacle.color;
+                ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+            }
+        }
+
+        function checkCollision() {
+            for (const obstacle of obstacles) {
+                if (
+                    player.x < obstacle.x + obstacle.width &&
+                    player.x + player.size > obstacle.x &&
+                    player.y < obstacle.y + obstacle.height &&
+                    player.y + player.size > obstacle.y
+                ) {
+                    isGameOver = true;
+                }
+            }
+
+            if (player.y + player.size > canvas.height || player.y < 0) {
+                isGameOver = true;
+            }
+        }
+
+        function drawScore() {
+            ctx.fillStyle = '#fff';
+            ctx.font = '24px Arial';
+            ctx.fillText(`Score: ${score}`, 10, 30);
+        }
+
+        function update() {
+            if (isGameOver) {
+                gameOverElement.style.display = 'block';
+                restartButton.style.display = 'block';
+                return;
+            }
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            player.y += player.gravity;
+
+            updateObstacles();
+            checkCollision();
+
+            drawPlayer();
+            drawObstacles();
+            drawScore();
+
+            requestAnimationFrame(update);
+        }
+
+        restartButton.addEventListener('click', () => {
+            initializeGame();
+            createObstacle();
+            update();
+        });
+
+        window.addEventListener('touchstart', () => {
+            player.y -= player.speed * 30;
+        });
+
+        initializeGame();
+        createObstacle();
+        update();
+    </script>
+</body>
+  </html>
