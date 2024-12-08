@@ -10,23 +10,28 @@
             margin: 0;
             padding: 0;
             text-align: center;
+            background-color: #f9f9f9; /* Yengil fon rangi */
         }
+
         header {
             background-color: #4CAF50;
             color: white;
             padding: 20px 0;
             font-size: 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Quyida soyalar */
         }
+
         .buttons-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin: 20px 0;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* Ikkita ustun */
+            gap: 15px; /* Tugmalar orasida masofa */
+            margin: 20px;
+            padding: 0 10px; /* Yon tomondan bo‘sh joy */
         }
+
         .button {
-            width: 150px;
-            height: 100px;
-            margin: 10px;
+            width: 100%; /* Ekran kengligiga moslashadi */
+            height: 80px; /* Har doim bir xil balandlik */
             background-color: #f0f0f0;
             border: 2px solid #ccc;
             display: flex;
@@ -37,12 +42,14 @@
             cursor: pointer;
             text-decoration: none;
             color: black;
-            transition: background-color 0.3s, transform 0.3s;
+            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
         }
+
         .button:hover {
             background-color: #4CAF50;
             color: white;
-            transform: scale(1.1);
+            transform: scale(1.1) rotate(3deg); /* Hajmi oshadi va biroz aylanadi */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Hoverda soyalar */
         }
     </style>
 </head>
@@ -51,12 +58,12 @@
         Rasul Projects
     </header>
     <div class="buttons-container">
-        <a href="Chatbot.html" class="button">chatbot</a>
-        <a href="qqr.html" class="button">qqr=uzb translate</a>
-        <a href="test.html" class="button">test</a>
-        <a href="" class="button">×</a>
-        <a href="" class="button">×</a>
-        <a href="" class="button">×</a>
+        <a href="Chatbot.html" class="button">Chatbot</a>
+        <a href="qqr.html" class="button">QQR = Uzb Translate</a>
+        <a href="test.html" class="button">Test</a>
+        <a href="calculator.html" class="button">Calculator</a>
+        <a href="notes.html" class="button">Notes</a>
+        <a href="todo.html" class="button">To-Do List</a>
     </div>
 </body>
 </html>
