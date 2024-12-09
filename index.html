@@ -10,28 +10,39 @@
             margin: 0;
             padding: 0;
             text-align: center;
-            background-color: #f9f9f9; /* Yengil fon rangi */
+            background-image: url('https://www.dropbox.com/scl/fi/gn7d5rucmfa45rpjudzsn/58be5226ca0cd974b78b21f79447eba0.jpg?rlkey=yqz40jenoq6j5d9hh489nwdn1&st=iprhdtps&dl=1');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            opacity: 0; /* Boshlang'ich holatda ko'rinmas */
+            transition: opacity 1s ease-in-out; /* Fade-in effekti */
+        }
+
+        /* Sahifa yuklanganidan so'ng fonni ko'rsatish */
+        body.loaded {
+            opacity: 1;
         }
 
         header {
-            background-color: #4CAF50;
+            background-color: rgba(76, 175, 80, 0.8);
             color: white;
             padding: 20px 0;
             font-size: 24px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Quyida soyalar */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
         }
 
         .buttons-container {
             display: grid;
-            grid-template-columns: repeat(2, 1fr); /* Ikkita ustun */
-            gap: 15px; /* Tugmalar orasida masofa */
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
             margin: 20px;
-            padding: 0 10px; /* Yon tomondan bo‘sh joy */
+            padding: 0 10px;
         }
 
         .button {
-            width: 100%; /* Ekran kengligiga moslashadi */
-            height: 80px; /* Har doim bir xil balandlik */
+            width: 100%;
+            height: 80px;
             background-color: #f0f0f0;
             border: 2px solid #ccc;
             display: flex;
@@ -48,8 +59,8 @@
         .button:hover {
             background-color: #4CAF50;
             color: white;
-            transform: scale(1.1) rotate(3deg); /* Hajmi oshadi va biroz aylanadi */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Hoverda soyalar */
+            transform: scale(1.1) rotate(3deg);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
         }
     </style>
 </head>
@@ -65,5 +76,11 @@
         <a href="game.html" class="button">Game</a>
         <a href="todo.html" class="button">To-Do List</a>
     </div>
+
+    <script>
+        window.onload = function() {
+            document.body.classList.add('loaded');
+        }
+    </script>
 </body>
 </html>
