@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rasul Projects</title>
     <style>
+        /* FON UCHUN */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -15,11 +16,10 @@
             background-position: center;
             background-repeat: no-repeat;
             min-height: 100vh;
-            opacity: 0; /* Boshlang'ich holatda ko'rinmas */
-            transition: opacity 1s ease-in-out; /* Fade-in effekti */
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
         }
 
-        /* Sahifa yuklanganidan so'ng fonni ko'rsatish */
         body.loaded {
             opacity: 1;
         }
@@ -62,25 +62,107 @@
             transform: scale(1.1) rotate(3deg);
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
         }
+
+        .button:active {
+            transform: scale(0.95);
+            box-shadow: none;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                font-size: 18px;
+                padding: 15px 0;
+            }
+        }
+
+        .snowverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
     <header>
         Rasul Projects
     </header>
+    <canvas class="snowverlay"></canvas>
     <div class="buttons-container">
         <a href="Chatbot.html" class="button">Chatbot</a>
         <a href="qqr.html" class="button">QQR = Uzb Translate</a>
         <a href="saat.html" class="button">tuwılǵan kúnler</a>
         <a href="baraban.html" class="button">Baraban</a>
         <a href="game.html" class="button">Game</a>
-        <a href="3dgame" class="button">3dgame</a>
+        <a href="3dgame.html" class="button">3dgame</a>
     </div>
 
     <script>
+        /* Fade-in effekt */
         window.onload = function() {
-            document.body.classList.add('loaded');
-        }
+            const bgImage = new Image();
+            bgImage.src = 'https://www.dropbox.com/scl/fi/gn7d5rucmfa45rpjudzsn/58be5226ca0cd974b78b21f79447eba0.jpg?rlkey=yqz40jenoq6j5d9hh489nwdn1&st=6n59pkfd&dl=1';
+            bgImage.onload = function() {
+                document.body.classList.add('loaded');
+            };
+        };
+
+        /* Qor effekti */
+        const SNOWFLAKE_AMOUNT = 50;
+        const SNOWFLAKE_SIZE = { min: 1, max: 4 };
+        const SNOWFLAKE_SPEED = { min: 0.2, max: 1.2 };
+
+        const setupCanvas = () => {
+            const canvas = document.querySelector('.snowverlay');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            window.addEventListener('resize', () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            });
+
+            return { canvas, ctx };
+        };
+
+        const createSnowflake = (canvas) => ({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            size: Math.random() * (SNOWFLAKE_SIZE.max - SNOWFLAKE_SIZE.min) + SNOWFLAKE_SIZE.min,
+            speed: Math.random() * (SNOWFLAKE_SPEED.max - SNOWFLAKE_SPEED.min) + SNOWFLAKE_SPEED.min
+        });
+
+        const startSnowAnimation = () => {
+            const { canvas, ctx } = setupCanvas();
+            const snowflakes = Array.from({ length: SNOWFLAKE_AMOUNT }, () => createSnowflake(canvas));
+
+            const animate = () => {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                snowflakes.forEach(flake => {
+                    flake.y += flake.speed;
+                    flake.x += Math.sin(flake.y / 30) * 0.5;
+
+                    if (flake.y > canvas.height) {
+                        flake.y = 0;
+                        flake.x = Math.random() * canvas.width;
+                    }
+
+                    ctx.beginPath();
+                    ctx.arc(flake.x, flake.y, flake.size, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                    ctx.fill();
+                });
+
+                requestAnimationFrame(animate);
+            };
+
+            animate();
+        };
+
+        document.addEventListener('DOMContentLoaded', startSnowAnimation);
     </script>
 </body>
 </html>
