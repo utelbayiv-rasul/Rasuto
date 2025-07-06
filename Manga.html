@@ -1,0 +1,272 @@
+<!DOCTYPE html>  
+<html lang="uz">  
+<head>  
+  <meta charset="UTF-8" />  
+  <title>Responsive Galereya</title>  
+  <style>  
+    * {  
+      box-sizing: border-box;  
+    }  
+    
+    body {  
+      margin: 0;  
+      padding: 0;  
+      font-family: sans-serif;  
+      background: #f2f2f2;  
+      height: 100vh;  
+    }  
+    
+    article {  
+      width: 100vw;  
+      height: 100vh;  
+      background: white;  
+      padding: 10px;  
+      display: flex;  
+      flex-direction: column;  
+      justify-content: space-between;  
+    }  
+    
+    .Bienvenida {  
+      text-align: center;  
+      font-size: 24px;  
+      margin-bottom: 10px;  
+      color: #f90;  
+      border: 2px solid #f90;  
+      border-radius: 5px;  
+      padding: 10px;  
+    }  
+    
+    .nav-buttons {  
+      display: flex;  
+      justify-content: space-between;  
+      align-items: center;  
+      margin-bottom: 10px;  
+    }  
+    
+    .nav-buttons button {  
+      padding: 8px 15px;  
+      background-color: lightblue;  
+      border: none;  
+      border-radius: 5px;  
+      cursor: pointer;  
+    }  
+    
+    .Capitulo {  
+      flex: 1;  
+      display: flex;  
+      align-items: center;  
+      justify-content: center;  
+      position: relative;  
+      user-select: none;  
+    }  
+    
+    .Capitulo img {  
+      width: auto;  
+      max-width: 100%;  
+      max-height: 100%;  
+      object-fit: contain;  
+      display: none;  
+      cursor: pointer;  
+      position: absolute;  
+      left: 50%;  
+      top: 50%;  
+      transform: translate(-50%, -50%);  
+    }  
+    
+    .Capitulo img.active {  
+      display: block;  
+    }  
+    
+    .page-numbers {  
+      display: flex;  
+      justify-content: center;  
+      flex-wrap: wrap;  
+      gap: 5px;  
+      margin-top: 10px;  
+    }  
+    
+    .page-numbers button {  
+      padding: 5px 10px;  
+      background-color: #ddd;  
+      border: none;  
+      border-radius: 5px;  
+      cursor: pointer;  
+    }  
+    
+    .page-numbers button.active {  
+      background-color: #f90;  
+      color: white;  
+    }  
+    
+    .ellipsis {  
+      padding: 5px 10px;  
+      color: #999;  
+      font-weight: bold;  
+      user-select: none;  
+    }  
+  </style>
+</head>  
+<body>  
+  <article>  
+    <section>  
+ <!-- <h1 class="Bienvenida">jjk</h1> --->
+    </section>  
+  
+    <div class="nav-buttons">  
+      <button onclick="prevImage()">&lt;</button>  
+      <span id="page-label">1-bet</span>  
+      <button onclick="nextImage()">&gt;</button>  
+    </div>  
+  
+    <div class="Capitulo" id="gallery">  
+      <!-- Rasmlar -->  
+        <img src="manga-r/-img-000.jpg">
+<img src="manga-r/-img-001.jpg">
+<img src="manga-r/-img-002.jpg">
+<img src="manga-r/-img-003.jpg">
+<img src="manga-r/-img-004.jpg">
+<img src="manga-r/-img-005.jpg">
+<img src="manga-r/-img-006.jpg">
+<img src="manga-r/-img-007.jpg">
+<img src="manga-r/-img-008.jpg">
+<img src="manga-r/-img-009.jpg">
+<img src="manga-r/-img-010.jpg">
+<img src="manga-r/-img-011.jpg">
+<img src="manga-r/-img-012.jpg">
+<img src="manga-r/-img-013.jpg">
+<img src="manga-r/-img-014.jpg">
+<img src="manga-r/-img-015.jpg">
+<img src="manga-r/-img-016.jpg">
+<img src="manga-r/-img-017.jpg">
+<img src="manga-r/-img-018.jpg">
+<img src="manga-r/-img-019.jpg">
+<img src="manga-r/-img-020.jpg">
+<img src="manga-r/-img-021.jpg">
+<img src="manga-r/-img-022.jpg">
+<img src="manga-r/-img-023.jpg">
+<img src="manga-r/-img-024.jpg">
+<img src="manga-r/-img-025.jpg">
+<img src="manga-r/-img-026.jpg">
+<img src="manga-r/-img-027.jpg">
+<img src="manga-r/-img-028.jpg">
+<img src="manga-r/-img-029.jpg">
+<img src="manga-r/-img-030.jpg">
+<img src="manga-r/-img-031.jpg">
+<img src="manga-r/-img-032.jpg">
+<img src="manga-r/-img-033.jpg">
+<img src="manga-r/-img-034.jpg">
+<img src="manga-r/-img-035.jpg">
+<img src="manga-r/-img-036.jpg">
+<img src="manga-r/-img-037.jpg">
+<img src="manga-r/-img-038.jpg">
+<img src="manga-r/-img-039.jpg">
+<img src="manga-r/-img-040.jpg">
+<img src="manga-r/-img-041.jpg">
+<img src="manga-r/-img-042.jpg">
+<img src="manga-r/-img-043.jpg">
+<img src="manga-r/-img-044.jpg">
+<img src="manga-r/-img-045.jpg">
+<img src="manga-r/-img-046.jpg">
+<img src="manga-r/-img-047.jpg">
+<img src="manga-r/-img-048.jpg">
+<img src="manga-r/-img-049.jpg">
+<img src="manga-r/-img-050.jpg">
+<img src="manga-r/-img-051.jpg">
+<img src="manga-r/-img-052.jpg">
+<img src="manga-r/-img-053.jpg">
+    </div>  
+  
+    <div class="page-numbers" id="page-buttons"></div>  
+  </article>  
+  
+  <script>  
+    const images = document.querySelectorAll('#gallery img');  
+    const pageLabel = document.getElementById('page-label');  
+    const pageButtonsContainer = document.getElementById('page-buttons');  
+  
+    let current = 0;  
+    const maxVisible = 4;  
+  
+    function showImage(index) {  
+      images.forEach((img, i) => {  
+        img.classList.toggle('active', i === index);  
+      });  
+      current = index;  
+      pageLabel.textContent = (current + 1) + "-bet";  
+      updatePageButtons();  
+    }  
+  
+    function prevImage() {  
+      const newIndex = (current - 1 + images.length) % images.length;  
+      showImage(newIndex);  
+    }  
+  
+    function nextImage() {  
+      const newIndex = (current + 1) % images.length;  
+      showImage(newIndex);  
+    }  
+  
+    function updatePageButtons() {  
+      pageButtonsContainer.innerHTML = "";  
+  
+      const total = images.length;  
+      let start = Math.max(1, current + 1 - Math.floor(maxVisible / 2));  
+      let end = Math.min(total, start + maxVisible - 1);  
+  
+      if (end - start + 1 < maxVisible) {  
+        start = Math.max(1, end - maxVisible + 1);  
+      }  
+  
+      // Always show first page  
+      if (start > 1) {  
+        addPageButton(0);  
+        if (start > 2) addEllipsis();  
+      }  
+  
+      for (let i = start; i <= end; i++) {  
+        addPageButton(i - 1);  
+      }  
+  
+      // Always show last page  
+      if (end < total) {  
+        if (end < total - 1) addEllipsis();  
+        addPageButton(total - 1);  
+      }  
+    }  
+  
+    function addPageButton(index) {  
+      const btn = document.createElement("button");  
+      btn.textContent = index + 1;  
+      if (index === current) btn.classList.add("active");  
+      btn.onclick = () => showImage(index);  
+      pageButtonsContainer.appendChild(btn);  
+    }  
+  
+    function addEllipsis() {  
+      const dot = document.createElement("span");  
+      dot.className = "ellipsis";  
+      dot.textContent = "...";  
+      pageButtonsContainer.appendChild(dot);  
+    }  
+  
+    // Rasmdagi chap yoki o'ng tomon bosilishini aniqlash
+    function onImageClick(e) {  
+      const rect = e.target.getBoundingClientRect();  
+      const clickX = e.clientX - rect.left;  
+      const width = rect.width;  
+  
+      if (clickX < width / 2) {  
+        prevImage(); // Chapga bosildi  
+      } else {  
+        nextImage(); // O'ngga bosildi  
+      }  
+    }  
+  
+    images.forEach(img => {  
+      img.addEventListener('click', onImageClick);  
+    });  
+  
+    showImage(0);  
+  </script>  
+</body>  
+  </html>
