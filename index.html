@@ -1,168 +1,238 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rasul Projects</title>
-    <style>
-        /* FON UCHUN */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-            background-image: url('https://www.dropbox.com/scl/fi/gn7d5rucmfa45rpjudzsn/58be5226ca0cd974b78b21f79447eba0.jpg?rlkey=yqz40jenoq6j5d9hh489nwdn1&st=6n59pkfd&dl=1');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            min-height: 100vh;
-            opacity: 0;
-            transition: opacity 1s ease-in-out;
-        }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Rasul Projects</title>
+<style>
+  /* Reset va asosiy font */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    overflow-x: hidden;
+    color: #fff;
+    perspective: 1000px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
-        body.loaded {
-            opacity: 1;
-        }
+  /* Parallax fon uchun */
+  #background {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: url('https://www.dropbox.com/scl/fi/gn7d5rucmfa45rpjudzsn/58be5226ca0cd974b78b21f79447eba0.jpg?rlkey=yqz40jenoq6j5d9hh489nwdn1&st=6n59pkfd&dl=1');
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.5) saturate(1.2);
+    transform-style: preserve-3d;
+    z-index: -2;
+    will-change: transform;
+  }
 
-        header {
-            background-color: rgba(76, 175, 80, 0.8);
-            color: white;
-            padding: 20px 0;
-            font-size: 24px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-        }
+  /* Header */
+  header {
+    margin-top: 40px;
+    font-size: 3rem;
+    font-weight: 900;
+    text-shadow:
+      0 0 10px rgba(76, 175, 80, 0.8),
+      0 0 20px rgba(76, 175, 80, 0.6),
+      0 0 30px rgba(76, 175, 80, 0.4);
+    user-select: none;
+  }
 
-        .buttons-container {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin: 20px;
-            padding: 0 10px;
-        }
+  /* Buttons container */
+  .buttons-container {
+    margin: 50px 20px 80px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 25px;
+    width: 90vw;
+    max-width: 900px;
+  }
 
-        .button {
-            width: 100%;
-            height: 80px;
-            background-color: #f0f0f0;
-            border: 2px solid #ccc;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: none;
-            color: black;
-            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
-        }
+  /* 3D style button */
+  .button {
+    background: linear-gradient(145deg, #4caf50, #388e3c);
+    border-radius: 15px;
+    box-shadow:
+      0 8px 15px rgba(0, 0, 0, 0.3),
+      inset 0 -3px 5px rgba(0, 0, 0, 0.2);
+    color: #e0f2f1;
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 20px 0;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    user-select: none;
+    transition:
+      transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      background 0.35s ease;
+    transform-style: preserve-3d;
+    will-change: transform, box-shadow;
+    position: relative;
+  }
 
-        .button:hover {
-            background-color: #4CAF50;
-            color: white;
-            transform: scale(1.1) rotate(3deg);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-        }
+  /* 3D depth */
+  .button::before {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 10%;
+    width: 80%;
+    height: 10px;
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 50%;
+    filter: blur(8px);
+    opacity: 0.6;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
+  }
 
-        .button:active {
-            transform: scale(0.95);
-            box-shadow: none;
-        }
+  /* Hover effect */
+  .button:hover {
+    background: linear-gradient(145deg, #66bb6a, #2e7d32);
+    transform: translateZ(30px) rotateX(8deg) rotateY(8deg) scale(1.1);
+    box-shadow:
+      0 20px 30px rgba(0, 0, 0, 0.5),
+      inset 0 -5px 10px rgba(0, 0, 0, 0.3);
+  }
+  .button:hover::before {
+    opacity: 0.9;
+  }
 
-        @media (max-width: 600px) {
-            header {
-                font-size: 18px;
-                padding: 15px 0;
-            }
-        }
+  /* Active press effect */
+  .button:active {
+    transform: translateZ(10px) rotateX(2deg) rotateY(2deg) scale(0.95);
+    box-shadow:
+      0 6px 10px rgba(0, 0, 0, 0.3),
+      inset 0 -2px 4px rgba(0, 0, 0, 0.2);
+  }
 
-        .snowverlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-    </style>
+  /* Responsive font size */
+  @media (max-width: 600px) {
+    header {
+      font-size: 2rem;
+      margin-top: 30px;
+    }
+    .button {
+      font-size: 1rem;
+      padding: 16px 0;
+    }
+  }
+
+  /* Snow canvas */
+  canvas.snowoverlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 10;
+  }
+</style>
 </head>
 <body>
-    <header>
-        Rasul Projects
-    </header>
-    <canvas class="snowverlay"></canvas>
-    <div class="buttons-container">
-        <a href="qqr.html" class="button">QQR = Uzb Translate</a>
-        <a href="saat.html" class="button">tuwılǵan kúnler</a>
-        <a href="game.html" class="button">Game</a>
-        <a href="3dgame.html" class="button">3dgame</a>
-        <a href="Chatbot.html" class="button">Chatbot</a>
-        <a href="Manga.html" class="button">Manga</a>
-    </div>
+  <div id="background"></div>
+  <header>Rasul Projects</header>
 
-    <script>
-        /* Fade-in effekt */
-        window.onload = function() {
-            const bgImage = new Image();
-            bgImage.src = 'https://www.dropbox.com/scl/fi/gn7d5rucmfa45rpjudzsn/58be5226ca0cd974b78b21f79447eba0.jpg?rlkey=yqz40jenoq6j5d9hh489nwdn1&st=6n59pkfd&dl=1';
-            bgImage.onload = function() {
-                document.body.classList.add('loaded');
-            };
-        };
+  <div class="buttons-container">
+    <a href="qqr.html" class="button" aria-label="QQR = Uzb Translate">QQR = Uzb Translate</a>
+    <a href="saat.html" class="button" aria-label="Tuwılǵan kúnler">Tuwılǵan kúnler</a>
+    <a href="game.html" class="button" aria-label="Game">Game</a>
+    <a href="3dgame.html" class="button" aria-label="3D Game">3D Game</a>
+    <a href="Chatbot.html" class="button" aria-label="Chatbot">Chatbot</a>
+    <a href="Manga.html" class="button" aria-label="Manga">Manga</a>
+  </div>
 
-        /* Qor effekti */
-        const SNOWFLAKE_AMOUNT = 50;
-        const SNOWFLAKE_SIZE = { min: 1, max: 4 };
-        const SNOWFLAKE_SPEED = { min: 0.2, max: 1.2 };
+  <canvas class="snowoverlay"></canvas>
 
-        const setupCanvas = () => {
-            const canvas = document.querySelector('.snowverlay');
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+<script>
+  // Parallax background movement based on mouse
+  const bg = document.getElementById('background');
+  window.addEventListener('mousemove', e => {
+    const x = (e.clientX / window.innerWidth - 0.5) * 20; // -10 to 10 deg
+    const y = (e.clientY / window.innerHeight - 0.5) * 20;
+    bg.style.transform = `translateZ(0) rotateX(${-y}deg) rotateY(${x}deg) scale(1.05)`;
+  });
 
-            window.addEventListener('resize', () => {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-            });
+  // Snow effect
+  const canvas = document.querySelector('.snowoverlay');
+  const ctx = canvas.getContext('2d');
+  let width, height;
+  const snowflakes = [];
+  const SNOWFLAKE_COUNT = 80;
 
-            return { canvas, ctx };
-        };
+  function resize() {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+  }
+  window.addEventListener('resize', resize);
+  resize();
 
-        const createSnowflake = (canvas) => ({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            size: Math.random() * (SNOWFLAKE_SIZE.max - SNOWFLAKE_SIZE.min) + SNOWFLAKE_SIZE.min,
-            speed: Math.random() * (SNOWFLAKE_SPEED.max - SNOWFLAKE_SPEED.min) + SNOWFLAKE_SPEED.min
-        });
+  function random(min, max) {
+    return Math.random() * (max - min) + min;
+  }
 
-        const startSnowAnimation = () => {
-            const { canvas, ctx } = setupCanvas();
-            const snowflakes = Array.from({ length: SNOWFLAKE_AMOUNT }, () => createSnowflake(canvas));
+  class Snowflake {
+    constructor() {
+      this.reset();
+    }
+    reset() {
+      this.x = random(0, width);
+      this.y = random(-height, 0);
+      this.radius = random(1, 4);
+      this.speed = random(0.5, 1.5);
+      this.wind = random(-0.5, 0.5);
+      this.opacity = random(0.3, 0.9);
+      this.angle = random(0, Math.PI * 2);
+      this.angularSpeed = random(0.01, 0.03);
+    }
+    update() {
+      this.y += this.speed;
+      this.x += this.wind + Math.sin(this.angle) * 0.5;
+      this.angle += this.angularSpeed;
 
-            const animate = () => {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                snowflakes.forEach(flake => {
-                    flake.y += flake.speed;
-                    flake.x += Math.sin(flake.y / 30) * 0.5;
+      if (this.y > height) this.reset();
+      if (this.x > width) this.x = 0;
+      if (this.x < 0) this.x = width;
+    }
+    draw(ctx) {
+      ctx.beginPath();
+      const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius);
+      gradient.addColorStop(0, `rgba(255, 255, 255, ${this.opacity})`);
+      gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+      ctx.fillStyle = gradient;
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
 
-                    if (flake.y > canvas.height) {
-                        flake.y = 0;
-                        flake.x = Math.random() * canvas.width;
-                    }
+  for (let i = 0; i < SNOWFLAKE_COUNT; i++) {
+    snowflakes.push(new Snowflake());
+  }
 
-                    ctx.beginPath();
-                    ctx.arc(flake.x, flake.y, flake.size, 0, Math.PI * 2);
-                    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-                    ctx.fill();
-                });
-
-                requestAnimationFrame(animate);
-            };
-
-            animate();
-        };
-
-        document.addEventListener('DOMContentLoaded', startSnowAnimation);
-    </script>
+  function animate() {
+    ctx.clearRect(0, 0, width, height);
+    snowflakes.forEach(flake => {
+      flake.update();
+      flake.draw(ctx);
+    });
+    requestAnimationFrame(animate);
+  }
+  animate();
+</script>
 </body>
 </html>
