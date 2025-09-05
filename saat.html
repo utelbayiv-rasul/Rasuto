@@ -4,8 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Saat hám Tuwılǵan Kún</title>
-  <!-- Tashqi CSS faylga ulash -->
-  <link rel="stylesheet" href="styles.css" />
   <style>
     /* Asosiy uslub */
     body {
@@ -146,9 +144,18 @@
   </div>
 
   <script>
-    const DAYS_IN_WEEK = 7;
+    // Haftaning kun raqamini olish (Dushanba=1, ..., Yakshanba=7)
+    function getWeekDayNumber(date) {
+      let day = date.getDay(); // 0 (Yakshanba) - 6 (Shanba)
+      return day === 0 ? 7 : day; // Yakshanba = 7, Dushanba = 1, ...
+    }
 
-    // Tug'ilgan kunlar ro'yxatini yangilash
+    function formatWeekDayNumber(date) {
+      const dayNumber = getWeekDayNumber(date);
+      return `${dayNumber}-kun`;
+    }
+
+    // Tug'ilgan kunlar ro'yxati
     const birthdays = [
       { name: "Shiraz", date: "2008-08-02" },
       { name: "Umida", date: "2008-12-22" },
@@ -178,19 +185,6 @@
 
     function padZero(num) {
       return String(num).padStart(2, "0");
-    }
-
-    // Haftaning yil boshidan boshlab nechi-kunida ekanligini hisoblash
-    function getWeekDayNumber(date) {
-      const yearStart = new Date(date.getFullYear(), 0, 1);
-      const diffTime = date - yearStart;
-      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-      return (diffDays % DAYS_IN_WEEK) + 1;
-    }
-
-    function formatWeekDayNumber(date) {
-      const dayNumber = getWeekDayNumber(date);
-      return ` ${dayNumber}-kun`;
     }
 
     function getBirthdayThisYear(person, year) {
