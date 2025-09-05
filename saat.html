@@ -1,36 +1,30 @@
 <!DOCTYPE html>
 <html lang="kk">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Saat hám Tuwılǵan Kún</title>
+  <!-- Tashqi CSS faylga ulash -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Soat va Sana -->
+  <div class="top-container">
+    <div class="time" id="time">00:00:00</div>
+    <div class="date" id="date">01 January 2024</div>
+    <div class="countdown" id="countdown"></div>
+  </div>
+
+  <!-- Tuwılǵan kún sarlavhasi -->
+  <div class="title-container">Tuwılǵan kúnler</div>
+
+  <!-- Tuwılǵan kún kartalari -->
+  <div class="birthday-container" id="birthdayContainer">
+    <!-- Kartalar JavaScript orqali qo'shiladi -->
+  </div>
+
   <script>
-      function updateTimeAndBirthdays() {
-  const timeElement = document.getElementById('time');
-  const dateElement = document.getElementById('date');
-  const countdownElement = document.getElementById('countdown');
-  const birthdayContainer = document.getElementById('birthdayContainer');
-
-  const now = new Date();
-  const hours = String(now.getHours()).padStart(2, '0');
-  const minutes = String(now.getMinutes()).padStart(2, '0');
-  const seconds = String(now.getSeconds()).padStart(2, '0');
-  const day = now.getDate();
-  const month = now.toLocaleString('default', { month: 'long' });
-  const year = now.getFullYear();
-
-  // Soat va sanani yangilash
-  timeElement.textContent = `${hours}:${minutes}:${seconds}`;
-  dateElement.textContent = `${day} ${month} ${year}`;
-  
-  // Yangi yilga hisoblagich
-  const nextYear = new Date(year + 1, 0, 1);
-  const timeDifference = nextYear - now;
-  const daysLeft = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-  const hoursLeft = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutesLeft = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-  const secondsLeft = Math.floor((timeDifference % (1000 * 60)) / 1000);
-  countdownElement.textContent = `Jan'a jılg'a deyingi waqıt: ${daysLeft} kún, ${hoursLeft} saat, ${minutesLeft} minut, ${secondsLeft} sekund`;
+    const DAYS_IN_WEEK = 7;
 
   // Tug'ilgan kunlar ro'yxatini yangilash
   const birthdays = [
@@ -56,67 +50,134 @@
     { name: "Aliy", date: "2008-04-06" },
     { name: "Zamir", date: "2008-05-05" },
     { name: "Ramuza", date: "2008-09-30" },
-    { name: "Sagdiyana", date: "2008-06-16" },
+    { name: "Sagdiyana", date: "2008-06-17" },
+    { name: "Aygul", date: "2008-07-24" },
   ];
 
-  birthdayContainer.innerHTML = ''; // Tozalash
+    function padZero(num) {
+      return String(num).padStart(2, "0");
+    }
 
-  // Tug'ilgan kunni bugun bo'lganlarni topish
-  const todayBirthdayPeople = birthdays.filter(person => {
-    const birthDate = new Date(`${year}-${person.date.split('-')[1]}-${person.date.split('-')[2]}`);
-    return birthDate.getDate() === now.getDate() && birthDate.getMonth() === now.getMonth();
-  });
+    // Haftaning yil boshidan boshlab nechi-kunida ekanligini hisoblash
+    function getWeekDayNumber(date) {
+      const yearStart = new Date(date.getFullYear(), 0, 1);
+      const diffTime = date - yearStart;
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+      return (diffDays % DAYS_IN_WEEK) + 1;
+    }
 
-  // Bugun tug'ilganlar uchun maxsus format
-  todayBirthdayPeople.forEach((person) => {
-    const card = document.createElement('div');
-    card.className = 'birthday-card special-birthday';
-    card.innerHTML = `
-      <h3>${person.name}</h3>
-      <p>Sáne: ${person.date}</p>
-      <p><strong>Búgin tuwılǵan kúni</strong></p>
-    `;
-    birthdayContainer.appendChild(card);
-  });
+    function formatWeekDayNumber(date) {
+      const dayNumber = getWeekDayNumber(date);
+      return ` ${dayNumber}-kun`;
+    }
 
-  // Boshqa tug'ilgan kunlarni tartibda ko'rsatish
-  birthdays.sort((a, b) => {
-    const dateA = new Date(`${year}-${a.date.split('-')[1]}-${a.date.split('-')[2]}`);
-    const dateB = new Date(`${year}-${b.date.split('-')[1]}-${b.date.split('-')[2]}`);
+    function getBirthdayThisYear(person, year) {
+      const [birthYear, birthMonth, birthDay] = person.date.split("-").map(Number);
+      return new Date(year, birthMonth - 1, birthDay);
+    }
 
-    if (dateA < now) dateA.setFullYear(year + 1);
-    if (dateB < now) dateB.setFullYear(year + 1);
+    function updateTimeAndBirthdays() {
+      const timeElement = document.getElementById("time");
+      const dateElement = document.getElementById("date");
+      const countdownElement = document.getElementById("countdown");
+      const birthdayContainer = document.getElementById("birthdayContainer");
 
-    return dateA - dateB;
-  });
+      const now = new Date();
+      const hours = padZero(now.getHours());
+      const minutes = padZero(now.getMinutes());
+      const seconds = padZero(now.getSeconds());
+      const day = now.getDate();
+      const month = now.toLocaleString("default", { month: "long" });
+      const year = now.getFullYear();
 
-  // Tug'ilgan kuni bugun bo'lmaganlarni ko'rsatish
-  birthdays.forEach((person) => {
-    const birthDate = new Date(`${year}-${person.date.split('-')[1]}-${person.date.split('-')[2]}`);
-    if (birthDate < now) birthDate.setFullYear(year + 1);
+      timeElement.textContent = `${hours}:${minutes}:${seconds}`;
+      dateElement.textContent = `${day} ${month} ${year}`;
 
-    const timeDifference = birthDate - now;
-    const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+      const nextYear = new Date(year + 1, 0, 1);
+      const timeDifference = nextYear - now;
+      const daysLeft = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+      const hoursLeft = Math.floor(
+        (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      );
+      const minutesLeft = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+      const secondsLeft = Math.floor((timeDifference % (1000 * 60)) / 1000);
+      countdownElement.textContent = `Jan'a jılg'a deyingi waqıt: ${daysLeft} kún, ${hoursLeft} saat, ${minutesLeft} minut, ${secondsLeft} sekund`;
 
-    const card = document.createElement('div');
-    card.className = 'birthday-card';
-    card.innerHTML = `
-      <h3>${person.name}</h3>
-      <p>Sáne: ${person.date}</p>
-      <p>Qalğan waqıt: ${days} kún, ${hours} saat, ${minutes} minut, ${seconds} sekund</p>
-    `;
-    birthdayContainer.appendChild(card);
-  });
-}
+      birthdayContainer.innerHTML = "";
 
-// Interval o'rnatish
-setInterval(updateTimeAndBirthdays, 1000);
+      const todayBirthdayPeople = birthdays.filter((person) => {
+        const birthDateThisYear = getBirthdayThisYear(person, year);
+        return (
+          birthDateThisYear.getDate() === now.getDate() &&
+          birthDateThisYear.getMonth() === now.getMonth()
+        );
+      });
+
+      todayBirthdayPeople.forEach((person) => {
+        const birthDateThisYear = getBirthdayThisYear(person, year);
+        const weekDayInfo = formatWeekDayNumber(birthDateThisYear);
+
+        const card = document.createElement("div");
+        card.className = "birthday-card special-birthday";
+        card.style.animationDelay = "0.4s";
+        card.innerHTML = `
+          <h3>${person.name}</h3>
+          <p>Sáne: ${person.date}</p>
+          <p><strong>Búgin tuwılǵan kúni</strong></p>
+          <p><em>${weekDayInfo}</em></p>
+        `;
+        birthdayContainer.appendChild(card);
+      });
+
+      const sortedBirthdays = birthdays
+        .map((person) => {
+          let birthDateThisYear = getBirthdayThisYear(person, year);
+          if (birthDateThisYear < now) {
+            birthDateThisYear = getBirthdayThisYear(person, year + 1);
+          }
+          return { ...person, birthDateThisYear };
+        })
+        .sort((a, b) => a.birthDateThisYear - b.birthDateThisYear);
+
+      let delay = 0.6;
+      sortedBirthdays.forEach((person) => {
+        const birthDateThisYear = person.birthDateThisYear;
+        if (
+          birthDateThisYear.getDate() === now.getDate() &&
+          birthDateThisYear.getMonth() === now.getMonth()
+        ) {
+          return;
+        }
+
+        const timeDifference = birthDateThisYear - now;
+        const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+        const hours = Math.floor(
+          (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        );
+        const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+        const weekDayInfo = formatWeekDayNumber(birthDateThisYear);
+
+        const card = document.createElement("div");
+        card.className = "birthday-card";
+        card.style.animationDelay = delay + "s";
+        delay += 0.2;
+        card.innerHTML = `
+          <h3>${person.name}</h3>
+          <p>Sáne: ${person.date}</p>
+          <p>Qalğan waqıt: ${days} kún, ${hours} saat, ${minutes} minut, ${seconds} sekund</p>
+          <p><em>${weekDayInfo}</em></p>
+        `;
+        birthdayContainer.appendChild(card);
+      });
+    }
+
+    setInterval(updateTimeAndBirthdays, 1000);
+    updateTimeAndBirthdays();
   </script>
   <style>
-      /* Asosiy uslub */
+            /* Asosiy uslub */
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -210,23 +271,5 @@ body {
   color: #a5d6a7;
 }
   </style>
-</head>
-<body>
-  <!-- Soat va Sana -->
-  <div class="top-container">
-    <div class="time" id="time">00:00:00</div>
-    <div class="date" id="date">01 January 2024</div>
-    <div class="countdown" id="countdown"></div>
-  </div>
-
-  <!-- Tuwılǵan kún sarlavhasi -->
-  <div class="title-container">Tuwılǵan kúnler</div>
-
-  <!-- Tuwılǵan kún kartalari -->
-  <div class="birthday-container" id="birthdayContainer">
-    <!-- Kartalar JavaScript orqali qoshlanadi -->
-  </div>
-
-  <script src="script.js"></script>
 </body>
-  </html>
+</html>
