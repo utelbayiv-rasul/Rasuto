@@ -6,6 +6,125 @@
   <title>Saat hám Tuwılǵan Kún</title>
   <!-- Tashqi CSS faylga ulash -->
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Asosiy uslub */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #121212;
+      color: #d4f4dd;
+    }
+
+    /* Soat va sana uchun uslub */
+    .top-container {
+      text-align: center;
+      margin: 20px 0;
+      padding: 10px;
+      border: 1px solid #1b5e20;
+      border-radius: 10px;
+      background: #1d2d1f;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
+      width: 80%;
+      max-width: 400px;
+    }
+
+    .time {
+      font-size: 18px;
+      font-weight: bold;
+      color: #4caf50;
+    }
+
+    .date {
+      font-size: 14px;
+      margin-top: 5px;
+      color: #81c784;
+    }
+
+    .countdown {
+      background-color: #2e7d32;
+      color: #e8f5e9;
+      padding: 10px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: bold;
+      text-align: center;
+      border: 1px solid #388e3c;
+      margin-top: 10px;
+    }
+
+    /* Sarlavha uslubi */
+    .title-container {
+      width: 100%;
+      background-color: #1b5e20;
+      text-align: center;
+      padding: 10px;
+      color: #ffffff;
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 20px;
+      border-bottom: 1px solid #2e7d32;
+    }
+
+    /* Tuwılǵan kún konteyneri */
+    .birthday-container {
+      margin-top: 20px;
+      width: 90%;
+      max-width: 800px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      justify-content: center;
+      transition: all 0.5s ease;
+    }
+
+    /* Expanded holat: 1 qatordan iborat */
+    .birthday-container.expanded {
+      grid-template-columns: 1fr;
+    }
+
+    .birthday-card {
+      background-color: #263238;
+      color: #d4f4dd;
+      padding: 10px;
+      border-radius: 10px;
+      text-align: center;
+      border: 1px solid #1b5e20;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
+      transition: all 0.3s ease;
+    }
+
+    .birthday-card h3 {
+      margin: 0 0 10px 0;
+      font-size: 16px;
+      color: #66bb6a;
+    }
+
+    .birthday-card p {
+      font-size: 14px;
+      color: #a5d6a7;
+    }
+
+    /* Tugma uslubi */
+    #toggleStyleBtn {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background-color: #4caf50;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    #toggleStyleBtn:hover {
+      background-color: #388e3c;
+    }
+  </style>
 </head>
 <body>
   <!-- Soat va Sana -->
@@ -18,6 +137,9 @@
   <!-- Tuwılǵan kún sarlavhasi -->
   <div class="title-container">Tuwılǵan kúnler</div>
 
+  <!-- Style o'zgartirish tugmasi -->
+  <button id="toggleStyleBtn">Style</button>
+
   <!-- Tuwılǵan kún kartalari -->
   <div class="birthday-container" id="birthdayContainer">
     <!-- Kartalar JavaScript orqali qo'shiladi -->
@@ -26,33 +148,33 @@
   <script>
     const DAYS_IN_WEEK = 7;
 
-  // Tug'ilgan kunlar ro'yxatini yangilash
-  const birthdays = [
-    { name: "Shiraz", date: "2008-08-02" },
-    { name: "Umida", date: "2008-12-22" },
-    { name: "Nurjan", date: "2008-05-06" },
-    { name: "Sardar", date: "2008-08-12" },
-    { name: "Sultan", date: "2008-04-14" },
-    { name: "Ariwxan", date: "2008-10-09" },
-    { name: "Shaxrizada", date: "2008-04-26" },
-    { name: "Ulmeken", date: "2008-10-25" },
-    { name: "Xoja", date: "2008-09-21" },
-    { name: "Ruslan", date: "2008-12-05" },
-    { name: "Hurliman", date: "2008-09-11" },
-    { name: "Atash", date: "2008-03-26" },
-    { name: "Diana", date: "2008-07-05" },
-    { name: "Aydana", date: "2008-05-26" },
-    { name: "Durdan", date: "2008-11-05" },
-    { name: "Jandos", date: "2008-02-23" },
-    { name: "Samandar", date: "2008-12-20" },
-    { name: "Akon", date: "2008-10-17" },
-    { name: "Rasul", date: "2008-04-14" },
-    { name: "Aliy", date: "2008-04-06" },
-    { name: "Zamir", date: "2008-05-05" },
-    { name: "Ramuza", date: "2008-09-30" },
-    { name: "Sagdiyana", date: "2008-06-17" },
-    { name: "Aygul", date: "2008-07-24" },
-  ];
+    // Tug'ilgan kunlar ro'yxatini yangilash
+    const birthdays = [
+      { name: "Shiraz", date: "2008-08-02" },
+      { name: "Umida", date: "2008-12-22" },
+      { name: "Nurjan", date: "2008-05-06" },
+      { name: "Sardar", date: "2008-08-12" },
+      { name: "Sultan", date: "2008-04-14" },
+      { name: "Ariwxan", date: "2008-10-09" },
+      { name: "Shaxrizada", date: "2008-04-26" },
+      { name: "Ulmeken", date: "2008-10-25" },
+      { name: "Xoja", date: "2008-09-21" },
+      { name: "Ruslan", date: "2008-12-05" },
+      { name: "Hurliman", date: "2008-09-11" },
+      { name: "Atash", date: "2008-03-26" },
+      { name: "Diana", date: "2008-07-05" },
+      { name: "Aydana", date: "2008-05-26" },
+      { name: "Durdan", date: "2008-11-05" },
+      { name: "Jandos", date: "2008-02-23" },
+      { name: "Samandar", date: "2008-12-20" },
+      { name: "Akon", date: "2008-10-17" },
+      { name: "Rasul", date: "2008-04-14" },
+      { name: "Aliy", date: "2008-04-06" },
+      { name: "Zamir", date: "2008-05-05" },
+      { name: "Ramuza", date: "2008-09-30" },
+      { name: "Sagdiyana", date: "2008-06-17" },
+      { name: "Aygul", date: "2008-07-24" },
+    ];
 
     function padZero(num) {
       return String(num).padStart(2, "0");
@@ -175,101 +297,14 @@
 
     setInterval(updateTimeAndBirthdays, 1000);
     updateTimeAndBirthdays();
+
+    // Tugma bosilganda style o'zgartirish
+    const toggleBtn = document.getElementById("toggleStyleBtn");
+    const birthdayContainer = document.getElementById("birthdayContainer");
+
+    toggleBtn.addEventListener("click", () => {
+      birthdayContainer.classList.toggle("expanded");
+    });
   </script>
-  <style>
-            /* Asosiy uslub */
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: #121212;
-  color: #d4f4dd;
-}
-
-/* Soat va sana uchun uslub */
-.top-container {
-  text-align: center;
-  margin: 20px 0;
-  padding: 10px;
-  border: 1px solid #1b5e20;
-  border-radius: 10px;
-  background: #1d2d1f;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
-  width: 80%;
-  max-width: 400px;
-}
-
-.time {
-  font-size: 18px;
-  font-weight: bold;
-  color: #4caf50;
-}
-
-.date {
-  font-size: 14px;
-  margin-top: 5px;
-  color: #81c784;
-}
-
-.countdown {
-  background-color: #2e7d32;
-  color: #e8f5e9;
-  padding: 10px;
-  border-radius: 10px;
-  font-size: 14px;
-  font-weight: bold;
-  text-align: center;
-  border: 1px solid #388e3c;
-  margin-top: 10px;
-}
-
-/* Sarlavha uslubi */
-.title-container {
-  width: 100%;
-  background-color: #1b5e20;
-  text-align: center;
-  padding: 10px;
-  color: #ffffff;
-  font-size: 18px;
-  font-weight: bold;
-  margin-top: 20px;
-  border-bottom: 1px solid #2e7d32;
-}
-
-/* Tuwılǵan kún konteyneri */
-.birthday-container {
-  margin-top: 20px;
-  width: 90%;
-  max-width: 800px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 15px;
-  justify-content: center;
-}
-
-.birthday-card {
-  background-color: #263238;
-  color: #d4f4dd;
-  padding: 10px;
-  border-radius: 10px;
-  text-align: center;
-  border: 1px solid #1b5e20;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
-}
-
-.birthday-card h3 {
-  margin: 0 0 10px 0;
-  font-size: 16px;
-  color: #66bb6a;
-}
-
-.birthday-card p {
-  font-size: 14px;
-  color: #a5d6a7;
-}
-  </style>
 </body>
 </html>
